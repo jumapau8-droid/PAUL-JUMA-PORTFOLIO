@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paul Juma — Finance-Trained Virtual Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2B38;
+    --navy-deep:#0A1E28;
+    --ivory:#F3EFE6;
+    --gold:#C7A552;
+    --sage:#7C9B82;
+    --line:rgba(243,239,230,0.16);
+    --muted:rgba(243,239,230,0.62);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--navy);
+    color:var(--ivory);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
+
+  /* Ledger rule motif */
+  .rule{border:none;border-top:1px solid var(--line);margin:0;}
+  .stamp{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.14em;
+    text-transform:uppercase;color:var(--sage);
+    border:1px solid var(--sage);border-radius:2px;padding:5px 10px;
+  }
+  .stamp::before{content:"✓";font-weight:600;}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(15,43,56,0.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
+  .brand{font-family:'Fraunces',serif;font-size:20px;}
+  .navlinks{display:flex;gap:28px;font-size:14px;color:var(--muted);}
+  .navlinks a{text-decoration:none;transition:color .2s;}
+  .navlinks a:hover{color:var(--gold);}
+
+  /* Hero */
+  .hero{padding:96px 0 72px;position:relative;}
+  .ledger-tick{
+    position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--line);
+  }
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:block;}
+  .hero h1{font-size:clamp(38px,6vw,64px);line-height:1.06;max-width:820px;}
+  .hero h1 .accent{color:var(--sage);}
+  .hero p.lede{margin-top:24px;max-width:560px;font-size:17px;color:var(--muted);}
+  .hero-cta{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.06em;
+    padding:13px 22px;border-radius:2px;text-decoration:none;display:inline-block;
+    transition:transform .15s ease, background .2s ease;
+  }
+  .btn-primary{background:var(--gold);color:var(--navy-deep);font-weight:500;}
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-ghost{border:1px solid var(--line);color:var(--ivory);}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+  .ledger-strip{display:flex;gap:0;margin-top:64px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .ledger-cell{flex:1;padding:20px 24px;border-right:1px solid var(--line);}
+  .ledger-cell:last-child{border-right:none;}
+  .ledger-cell .num{font-family:'IBM Plex Mono',monospace;font-size:26px;color:var(--gold);}
+  .ledger-cell .lbl{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:0.03em;}
+
+  section{padding:80px 0;}
+  .section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:44px;}
+  .section-head .idx{font-family:'IBM Plex Mono',monospace;color:var(--gold);font-size:13px;}
+  .section-head h2{font-size:clamp(26px,3.4vw,34px);}
+
+  /* About */
+  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:56px;}
+  .about-grid p{color:var(--muted);margin-bottom:16px;font-size:15.5px;}
+  .about-grid p strong{color:var(--ivory);font-weight:600;}
+  .credentials{border:1px solid var(--line);padding:22px;border-radius:3px;}
+  .credentials h3{font-size:15px;font-family:'IBM Plex Sans',sans-serif;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;}
+  .credentials li{list-style:none;font-size:14px;color:var(--muted);padding:9px 0;border-top:1px solid var(--line);}
+  .credentials li:first-of-type{border-top:none;}
+
+  /* Services */
+  .services{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
+  .service{background:var(--navy);padding:32px;}
+  .service .tag{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--sage);letter-spacing:0.1em;text-transform:uppercase;}
+  .service h3{font-size:22px;margin-top:10px;}
+  .service ul{margin-top:18px;}
+  .service li{list-style:none;font-size:14.5px;color:var(--muted);padding:8px 0;display:flex;gap:10px;}
+  .service li::before{content:"—";color:var(--gold);flex-shrink:0;}
+
+  /* Case studies */
+  .case{border:1px solid var(--line);border-radius:3px;padding:30px 32px;margin-bottom:20px;}
+  .case-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .case h3{font-size:21px;}
+  .case .client{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);margin-top:6px;}
+  .case p.desc{margin-top:16px;color:var(--muted);font-size:14.5px;max-width:640px;}
+  .case .deliverables{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:5px 10px;border:1px solid var(--line);border-radius:2px;color:var(--muted);}
+  .case-note{margin-top:16px;font-size:12.5px;color:var(--sage);font-style:italic;}
+
+  /* Skills */
+  .skills-row{display:flex;flex-wrap:wrap;gap:10px;}
+  .skill-chip{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:8px 14px;border:1px solid var(--line);border-radius:2px;color:var(--ivory);}
+
+  /* Contact */
+  .contact{text-align:center;padding:90px 0 100px;}
+  .contact h2{font-size:clamp(28px,4vw,42px);max-width:600px;margin:0 auto;}
+  .contact p{color:var(--muted);margin-top:16px;}
+  .contact .hero-cta{justify-content:center;margin-top:32px;}
+
+  footer{border-top:1px solid var(--line);padding:26px 0;text-align:center;font-size:12.5px;color:var(--muted);font-family:'IBM Plex Mono',monospace;}
+
+  @media (max-width:760px){
+    .about-grid{grid-template-columns:1fr;}
+    .services{grid-template-columns:1fr;}
+    .ledger-strip{flex-direction:column;}
+    .ledger-cell{border-right:none;border-bottom:1px solid var(--line);}
+    .ledger-cell:last-child{border-bottom:none;}
+    .navlinks{display:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="brand">Paul Juma</div>
+      <div class="navlinks">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Nairobi, Kenya · Remote-ready</span>
+    <h1>Numbers in order.<br>Inboxes in order.<br><span class="accent">Nothing falls through.</span></h1>
+    <p class="lede">I'm a finance-trained Virtual Assistant — I handle the admin, scheduling, and inbox work most VAs do, plus the bookkeeping, reconciliation, and reporting most VAs can't.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary">Get in touch</a>
+      <a href="#work" class="btn btn-ghost">See the work</a>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="ledger-strip">
+      <div class="ledger-cell">
+        <div class="num">BCom</div>
+        <div class="lbl">Finance, Kenyatta University</div>
+      </div>
+      <div class="ledger-cell">
+        <div class="num">2</div>
+        <div class="lbl">Certifications in progress — VA & Data Analytics</div>
+      </div>
+      <div class="ledger-cell">
+        <div class="num">100%</div>
+        <div class="lbl">Reconciliation accuracy on live ERP transactions</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">01</span><h2>About</h2></div>
+    <div class="about-grid">
+      <div>
+        <p><strong>I sit at the intersection of finance and virtual assistance</strong> — a combination that's rarer than it should be. Most VAs manage your calendar and inbox. I do that too, but I can also reconcile your bank statements, process your invoices, and turn your operational data into a report you'd actually trust.</p>
+        <p>That comes from real experience: as an Invoice Clerk Intern at Mogo Auto Limited, I process high-volume transactions inside an ERP system, run bank reconciliations, manage accounts receivable, and produce management reports — daily, not hypothetically.</p>
+        <p>I'm currently deepening the VA side through <strong>ALX-Africa's Virtual Assistance certification</strong>, and the analytics side through <strong>Google's Data Analytics Certificate</strong>, so I can support clients who need their numbers not just accurate, but understandable.</p>
+      </div>
+      <div class="credentials">
+        <h3>Credentials</h3>
+        <ul>
+          <li>BCom, Finance — Kenyatta University, 2024</li>
+          <li>Invoice Clerk Intern — Mogo Auto Limited</li>
+          <li>Virtual Assistance Certification — ALX-Africa (in progress)</li>
+          <li>Data Analytics Certificate — Google (in progress)</li>
+          <li>Data Analytics Certification — ALX-Africa (in progress)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services" style="background:var(--navy-deep);">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">02</span><h2>Services</h2></div>
+    <div class="services">
+      <div class="service">
+        <span class="tag">Finance Operations</span>
+        <h3>Keep the books balanced</h3>
+        <ul>
+          <li>Bank & account reconciliations</li>
+          <li>Accounts receivable management</li>
+          <li>ERP-based transaction processing</li>
+          <li>Management & financial reporting</li>
+          <li>Invoice processing & tracking</li>
+        </ul>
+      </div>
+      <div class="service">
+        <span class="tag">Virtual Assistance</span>
+        <h3>Keep the day running</h3>
+        <ul>
+          <li>Inbox & calendar management</li>
+          <li>Travel planning & itineraries</li>
+          <li>Data entry & document organization</li>
+          <li>Client communication & scheduling</li>
+          <li>Research & task coordination</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">03</span><h2>Selected work</h2></div>
+
+    <div class="case">
+      <div class="case-top">
+        <div>
+          <h3>Travel planning & budget management</h3>
+          <div class="client mono">Client simulation — Brenda Wanjiru</div>
+        </div>
+        <span class="stamp">Delivered</span>
+      </div>
+      <p class="desc">Planned a complete international trip package for a Dubai visit — building an organized travel pack alongside a detailed budget spreadsheet to track costs against plan.</p>
+      <div class="deliverables">
+        <span class="chip">Travel Itinerary</span>
+        <span class="chip">Budget Spreadsheet</span>
+        <span class="chip">Cost Tracking</span>
+      </div>
+      <div class="case-note">Completed as part of ALX-Africa's Virtual Assistance workplace simulation program.</div>
+    </div>
+
+    <div class="case">
+      <div class="case-top">
+        <div>
+          <h3>Inbox management & task coordination</h3>
+          <div class="client mono">Client simulation — Jordan</div>
+        </div>
+        <span class="stamp">Delivered</span>
+      </div>
+      <p class="desc">Designed an inbox management system and supported day-to-day administrative coordination as part of a simulated VA client engagement.</p>
+      <div class="deliverables">
+        <span class="chip">Inbox System Design</span>
+        <span class="chip">Task Coordination</span>
+      </div>
+      <div class="case-note">Completed as part of ALX-Africa's Virtual Assistance workplace simulation program.</div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" style="background:var(--navy-deep);">
+  <div class="wrap">
+    <div class="section-head"><span class="idx">04</span><h2>Skills</h2></div>
+    <div class="skills-row">
+      <span class="skill-chip">Bookkeeping</span>
+      <span class="skill-chip">Bank Reconciliation</span>
+      <span class="skill-chip">Financial Reporting</span>
+      <span class="skill-chip">Accounts Receivable</span>
+      <span class="skill-chip">ERP Systems</span>
+      <span class="skill-chip">Virtual Assistance</span>
+      <span class="skill-chip">Calendar Management</span>
+      <span class="skill-chip">Inbox Management</span>
+      <span class="skill-chip">Google Workspace</span>
+      <span class="skill-chip">Excel / Google Sheets</span>
+      <span class="skill-chip">Data Analytics</span>
+      <span class="skill-chip">Client Communication</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2>Let's sort out the details you don't have time for.</h2>
+    <p>Open to remote roles and freelance engagements in virtual assistance, bookkeeping, and finance operations.</p>
+    <div class="hero-cta">
+      <a href="mailto:jumapau8@gmail.com" class="btn btn-primary">jumapau8@gmail.com</a>
+      <a href="https://www.linkedin.com/in/paul-juma-545b28296" class="btn btn-ghost">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2026 Paul Juma — Nairobi, Kenya</div>
+</footer>
+
+</body>
+</html>
